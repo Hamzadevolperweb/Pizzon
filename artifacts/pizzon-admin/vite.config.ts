@@ -3,8 +3,10 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
+const isProd = process.env.NODE_ENV === "production";
+
 export default defineConfig({
-  base: "/",
+  base: isProd ? "/admin/" : "/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -14,7 +16,9 @@ export default defineConfig({
   },
   root: path.resolve(import.meta.dirname),
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    outDir: isProd
+      ? path.resolve(import.meta.dirname, "../pizzon/dist/public/admin")
+      : path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
   },
   server: {

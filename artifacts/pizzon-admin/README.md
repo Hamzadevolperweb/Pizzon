@@ -34,28 +34,12 @@ Opens at **http://localhost:5174**
 
 No animations. Backend integration can replace mock data and wire save actions later.
 
-## Deploy to Vercel
+## Deploy (single project with customer site)
 
-Deploy the admin as a **second Vercel project** from the same repo.
+The admin is built **into the same deployment** as the customer site. One Vercel project builds both:
 
-### Option A – Monorepo (recommended)
+- **Build command** (in root `vercel.json`): `pnpm install && pnpm run build && pnpm run build:admin`
+- **Output:** `artifacts/pizzon/dist/public` (customer app + `admin/` folder with the admin app)
+- **URLs:** Customer site at `/`, admin panel at **`/admin`** (e.g. `https://yoursite.vercel.app/admin`)
 
-1. In Vercel: **Add New Project** → import the same repo.
-2. Set **Root Directory** to **empty** (repo root).
-3. Override:
-   - **Build Command:** `pnpm install && pnpm run build:admin`
-   - **Output Directory:** `artifacts/pizzon-admin/dist/public`
-   - **Install Command:** `pnpm install`
-4. Deploy. The admin will get its own URL (e.g. `pizzon-admin-xxx.vercel.app`).
-
-### Option B – Subfolder as root
-
-1. In Vercel: **Add New Project** → import the same repo.
-2. Set **Root Directory** to `artifacts/pizzon-admin`.
-3. Use default Build and Install; **Output Directory** is already `dist/public` in `vercel.json`.
-4. Deploy.
-
-### After deploy
-
-- In your **customer** Vercel project, add env var **`VITE_ADMIN_URL`** = your admin URL (e.g. `https://pizzon-admin-xxx.vercel.app`). Then `yoursite.com/admin` will redirect to the admin app.
-- Use a custom domain for the admin (e.g. `admin.yourdomain.com`) in the admin project’s Vercel settings if you want.
+No second Vercel project or `VITE_ADMIN_URL` needed. Use one project with **Root Directory** = repo root (empty).
