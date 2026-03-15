@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Switch, Route, Router as WouterRouter } from 'wouter';
 import { CartProvider } from './context/CartContext';
 import Navbar from './components/Navbar';
@@ -18,6 +19,20 @@ import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
 import OrderPage from './pages/OrderPage';
 import CheckoutPage from './pages/CheckoutPage';
+
+function AdminRedirect() {
+  useEffect(() => {
+    const { hostname, port } = window.location;
+    if (hostname === 'localhost' && port === '5173') {
+      window.location.replace(`${window.location.protocol}//${hostname}:5174`);
+    }
+  }, []);
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#1a1a1a] text-white">
+      <p>Redirecting to admin…</p>
+    </div>
+  );
+}
 
 function HomePage() {
   return (
@@ -46,6 +61,7 @@ function App() {
         <Navbar />
         <CartDrawer />
         <Switch>
+          <Route path="/admin" component={AdminRedirect} />
           <Route path="/" component={HomePage} />
           <Route path="/order" component={OrderPage} />
           <Route path="/checkout" component={CheckoutPage} />
