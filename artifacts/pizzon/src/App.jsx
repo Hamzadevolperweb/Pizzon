@@ -23,6 +23,11 @@ import CheckoutPage from './pages/CheckoutPage';
 function AdminRedirect() {
   useEffect(() => {
     const { hostname, port } = window.location;
+    const adminUrl = import.meta.env.VITE_ADMIN_URL;
+    if (adminUrl) {
+      window.location.replace(adminUrl);
+      return;
+    }
     if (hostname === 'localhost' && port === '5173') {
       window.location.replace(`${window.location.protocol}//${hostname}:5174`);
     }
